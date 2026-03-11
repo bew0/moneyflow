@@ -6,6 +6,7 @@ const CATEGORIES = {
         { name: 'ลงทุน', icon: 'fas fa-chart-line', color: '#14b8a6' },
         { name: 'ขายของ', icon: 'fas fa-store', color: '#06b6d4' },
         { name: 'โบนัส', icon: 'fas fa-gift', color: '#0ea5e9' },
+        { name: 'เงินรายวัน', icon: 'fas fa-calendar-day', color: '#34d399' },
         { name: 'อื่นๆ', icon: 'fas fa-ellipsis', color: '#8b5cf6' },
     ],
     expense: [
