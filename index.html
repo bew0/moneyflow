@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บัญชีรายรับรายจ่าย | MoneyFlow</title>
+    <meta name="description" content="แอปบัญชีรายรับรายจ่าย สวยงาม ใช้งานง่าย พร้อมกราฟและสถิติ">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+Thai:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-wallet"></i></div>
+            <div>
+                <h1>MoneyFlow</h1>
+                <p class="logo-sub">บัญชีรายรับรายจ่าย</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <div class="month-selector">
+                <button id="prevMonth" class="btn-icon"><i class="fas fa-chevron-left"></i></button>
+                <span id="currentMonth" class="month-label"></span>
+                <button id="nextMonth" class="btn-icon"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <button id="syncBtn" class="btn-icon sync-btn" title="Sync กับ Google Sheets">
+                <i class="fas fa-cloud-arrow-up"></i>
+                <span id="syncDot" class="sync-dot hidden"></span>
+            </button>
+            <button id="settingsBtn" class="btn-icon" title="ตั้งค่า Google Sheets">
+                <i class="fas fa-gear"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Summary Cards -->
+        <section class="summary-cards">
+            <div class="card card-balance animate-in">
+                <div class="card-icon"><i class="fas fa-coins"></i></div>
+                <div class="card-info">
+                    <span class="card-label">ยอดคงเหลือ</span>
+                    <span id="balance" class="card-amount balance">฿0.00</span>
+                </div>
+            </div>
+            <div class="card card-income animate-in" style="animation-delay:.1s">
+                <div class="card-icon income-icon"><i class="fas fa-arrow-trend-up"></i></div>
+                <div class="card-info">
+                    <span class="card-label">รายรับ</span>
+                    <span id="totalIncome" class="card-amount income">฿0.00</span>
+                </div>
+            </div>
+            <div class="card card-expense animate-in" style="animation-delay:.2s">
+                <div class="card-icon expense-icon"><i class="fas fa-arrow-trend-down"></i></div>
+                <div class="card-info">
+                    <span class="card-label">รายจ่าย</span>
+                    <span id="totalExpense" class="card-amount expense">฿0.00</span>
+                </div>
+            </div>
+            <div class="card card-count animate-in" style="animation-delay:.3s">
+                <div class="card-icon count-icon"><i class="fas fa-receipt"></i></div>
+                <div class="card-info">
+                    <span class="card-label">รายการทั้งหมด</span>
+                    <span id="totalCount" class="card-amount">0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Left: Form + History -->
+            <div class="left-col">
+                <!-- Add Transaction Form -->
+                <div class="glass-card animate-in" style="animation-delay:.3s">
+                    <h2 class="section-title"><i class="fas fa-plus-circle"></i> เพิ่มรายการ</h2>
+                    <form id="transactionForm">
+                        <div class="type-toggle">
+                            <button type="button" class="toggle-btn active" data-type="income" id="btnIncome">
+                                <i class="fas fa-arrow-trend-up"></i> รายรับ
+                            </button>
+                            <button type="button" class="toggle-btn" data-type="expense" id="btnExpense">
+                                <i class="fas fa-arrow-trend-down"></i> รายจ่าย
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-tag"></i> หมวดหมู่</label>
+                            <select id="category" required>
+                                <option value="">เลือกหมวดหมู่</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-baht-sign"></i> จำนวนเงิน</label>
+                            <input type="number" id="amount" placeholder="0.00" min="0.01" step="0.01" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-calendar"></i> วันที่</label>
+                                <input type="date" id="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-pen"></i> หมายเหตุ</label>
+                                <input type="text" id="note" placeholder="รายละเอียด...">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-submit" id="submitBtn">
+                            <i class="fas fa-plus"></i> เพิ่มรายการ
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Transaction History -->
+                <div class="glass-card animate-in" style="animation-delay:.4s">
+                    <div class="section-header">
+                        <h2 class="section-title"><i class="fas fa-clock-rotate-left"></i> ประวัติรายการ</h2>
+                        <div class="filter-btns">
+                            <button class="filter-btn active" data-filter="all">ทั้งหมด</button>
+                            <button class="filter-btn" data-filter="income">รายรับ</button>
+                            <button class="filter-btn" data-filter="expense">รายจ่าย</button>
+                        </div>
+                    </div>
+                    <div id="transactionList" class="transaction-list">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>ยังไม่มีรายการ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Charts -->
+            <div class="right-col">
+                <div class="glass-card animate-in" style="animation-delay:.4s">
+                    <h2 class="section-title"><i class="fas fa-chart-pie"></i> สัดส่วนรายจ่าย</h2>
+                    <div class="chart-container">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                    <div id="pieLegend" class="chart-legend"></div>
+                </div>
+                <div class="glass-card animate-in" style="animation-delay:.5s">
+                    <h2 class="section-title"><i class="fas fa-chart-bar"></i> รายรับ-รายจ่ายรายเดือน</h2>
+                    <div class="chart-container bar-chart-container">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-icon"><i class="fas fa-trash-can"></i></div>
+            <h3>ลบรายการนี้?</h3>
+            <p>คุณต้องการลบรายการนี้หรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้</p>
+            <div class="modal-actions">
+                <button id="cancelDelete" class="btn-cancel">ยกเลิก</button>
+                <button id="confirmDelete" class="btn-delete">ลบเลย</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal-overlay">
+        <div class="modal settings-modal">
+            <div class="modal-icon" style="color:var(--accent)"><i class="fas fa-gear"></i></div>
+            <h3>ตั้งค่า Google Sheets</h3>
+            <p>วาง URL ของ Google Apps Script Web App ที่ deploy แล้ว</p>
+            <div class="settings-form">
+                <div class="form-group">
+                    <label><i class="fas fa-link"></i> Google Script URL</label>
+                    <input type="url" id="scriptUrl" placeholder="https://script.google.com/macros/s/...">
+                </div>
+                <div class="settings-status" id="connectionStatus"></div>
+                <div class="modal-actions">
+                    <button id="cancelSettings" class="btn-cancel">ปิด</button>
+                    <button id="testConnection" class="btn-submit" style="flex:1">
+                        <i class="fas fa-plug"></i> ทดสอบเชื่อมต่อ
+                    </button>
+                </div>
+                <div class="modal-actions" style="margin-top:8px">
+                    <button id="pushToSheet" class="btn-submit"
+                        style="flex:1;background:linear-gradient(135deg,var(--income-color),#10b981)">
+                        <i class="fas fa-cloud-arrow-up"></i> Push ไป Sheet
+                    </button>
+                    <button id="pullFromSheet" class="btn-submit"
+                        style="flex:1;background:linear-gradient(135deg,var(--cyan),#0ea5e9)">
+                        <i class="fas fa-cloud-arrow-down"></i> Pull จาก Sheet
+                    </button>
+                </div>
+            </div>
+            <div class="setup-guide">
+                <details>
+                    <summary><i class="fas fa-circle-question"></i> วิธีตั้งค่า Google Sheets</summary>
+                    <ol>
+                        <li>สร้าง Google Sheet ใหม่</li>
+                        <li>ไปที่ <strong>Extensions → Apps Script</strong></li>
+                        <li>ลบโค้ดเดิม แล้ว copy โค้ดจากไฟล์ <code>google-apps-script.js</code> ไปวาง</li>
+                        <li>กด <strong>Deploy → New deployment</strong></li>
+                        <li>เลือก Type: <strong>Web app</strong></li>
+                        <li>Execute as: <strong>Me</strong> / Who has access: <strong>Anyone</strong></li>
+                        <li>Copy URL มาวางในช่องด้านบน</li>
+                    </ol>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
