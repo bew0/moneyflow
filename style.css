@@ -939,6 +939,21 @@ body {
     }
 }
 
+/* ═══════════ Pull Button ═══════════ */
+.pull-btn {
+    position: relative;
+}
+
+.pull-btn:hover {
+    background: rgba(6, 182, 212, 0.1) !important;
+    color: var(--cyan) !important;
+    border-color: var(--cyan) !important;
+}
+
+.pull-btn.syncing i {
+    animation: spin 1s linear infinite;
+}
+
 /* ═══════════ Responsive ═══════════ */
 @media (max-width: 1100px) {
     .main-grid {
@@ -951,40 +966,382 @@ body {
 }
 
 @media (max-width: 768px) {
-    .summary-cards {
-        grid-template-columns: repeat(2, 1fr);
+    .header {
+        padding: 12px 16px;
+        flex-wrap: wrap;
+        gap: 10px;
     }
 
-    .header {
-        padding: 14px 16px;
-        flex-wrap: wrap;
+    .logo-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        font-size: 18px;
+    }
+
+    .logo h1 {
+        font-size: 1.15rem;
+    }
+
+    .logo-sub {
+        font-size: 0.7rem;
+    }
+
+    .logo {
+        gap: 10px;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .month-selector {
+        flex: 1;
+    }
+
+    .month-label {
+        min-width: 100px;
+        font-size: 0.85rem;
+    }
+
+    .summary-cards {
+        grid-template-columns: repeat(2, 1fr);
         gap: 12px;
     }
 
+    .card {
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .card-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        font-size: 18px;
+    }
+
+    .card-amount {
+        font-size: 1.25rem;
+    }
+
+    .card-label {
+        font-size: 0.7rem;
+    }
+
     .container {
-        padding: 20px 16px 40px;
+        padding: 16px 12px 40px;
     }
 
     .glass-card {
-        padding: 20px;
+        padding: 18px;
+        margin-bottom: 16px;
+    }
+
+    .section-title {
+        font-size: 0.95rem;
+        margin-bottom: 16px;
     }
 
     .form-row {
         grid-template-columns: 1fr;
     }
 
+    .form-group input,
+    .form-group select {
+        padding: 11px 14px;
+        font-size: 0.85rem;
+    }
+
+    .btn-submit {
+        padding: 13px;
+        font-size: 0.9rem;
+    }
+
     .section-header {
         flex-direction: column;
         align-items: flex-start;
+        gap: 10px;
+    }
+
+    .filter-btns {
+        width: 100%;
+    }
+
+    .filter-btn {
+        flex: 1;
+        text-align: center;
+        padding: 8px 10px;
+    }
+
+    .transaction-item {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .tx-cat-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        font-size: 15px;
+    }
+
+    .tx-category {
+        font-size: 0.82rem;
+    }
+
+    .tx-meta {
+        font-size: 0.7rem;
+        flex-wrap: wrap;
+    }
+
+    .tx-amount {
+        font-size: 0.88rem;
+    }
+
+    .bar-chart-container {
+        height: 220px;
+    }
+
+    .modal {
+        padding: 24px;
+    }
+
+    .settings-modal {
+        max-width: 95%;
+    }
+
+    .btn-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+    }
+
+    .toggle-btn {
+        padding: 10px;
+        font-size: 0.82rem;
     }
 }
 
 @media (max-width: 480px) {
+    .header {
+        padding: 10px 12px;
+        gap: 8px;
+    }
+
+    .logo-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+        border-radius: 10px;
+    }
+
+    .logo h1 {
+        font-size: 1.05rem;
+    }
+
+    .logo {
+        gap: 8px;
+    }
+
+    .header-actions {
+        gap: 6px;
+    }
+
+    .month-label {
+        min-width: 90px;
+        font-size: 0.8rem;
+    }
+
+    .btn-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+
     .summary-cards {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .card {
+        padding: 14px 12px;
+        gap: 10px;
+        border-radius: 12px;
+    }
+
+    .card-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        font-size: 16px;
     }
 
     .card-amount {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+    }
+
+    .card-label {
+        font-size: 0.65rem;
+        letter-spacing: 0.3px;
+    }
+
+    .container {
+        padding: 12px 10px 32px;
+    }
+
+    .glass-card {
+        padding: 16px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+    }
+
+    .section-title {
+        font-size: 0.9rem;
+        margin-bottom: 14px;
+        gap: 8px;
+    }
+
+    .section-title i {
+        font-size: 0.95rem;
+    }
+
+    .type-toggle {
+        gap: 6px;
+        margin-bottom: 16px;
+    }
+
+    .toggle-btn {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+        gap: 6px;
+        border-radius: 8px;
+    }
+
+    .form-group {
+        margin-bottom: 12px;
+    }
+
+    .form-group label {
+        font-size: 0.75rem;
+        margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group select {
+        padding: 10px 12px;
+        font-size: 0.82rem;
+        border-radius: 8px;
+    }
+
+    .btn-submit {
+        padding: 12px;
+        font-size: 0.85rem;
+        border-radius: 8px;
+    }
+
+    .filter-btn {
+        padding: 6px 8px;
+        font-size: 0.72rem;
+    }
+
+    .transaction-item {
+        padding: 10px;
+        gap: 8px;
+        border-radius: 8px;
+        margin-bottom: 6px;
+    }
+
+    .tx-cat-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        font-size: 13px;
+    }
+
+    .tx-category {
+        font-size: 0.78rem;
+    }
+
+    .tx-meta {
+        font-size: 0.65rem;
+    }
+
+    .tx-amount {
+        font-size: 0.82rem;
+    }
+
+    .tx-delete {
+        width: 28px;
+        height: 28px;
+    }
+
+    .transaction-list {
+        max-height: 400px;
+    }
+
+    .bar-chart-container {
+        height: 200px;
+    }
+
+    .chart-legend {
+        gap: 6px;
+        margin-top: 12px;
+    }
+
+    .legend-item {
+        font-size: 0.7rem;
+    }
+
+    .empty-state {
+        padding: 30px 16px;
+    }
+
+    .empty-state i {
+        font-size: 2.5rem;
+    }
+
+    .empty-state p {
+        font-size: 0.8rem;
+    }
+
+    .modal {
+        padding: 20px;
+        border-radius: 14px;
+    }
+
+    .modal h3 {
+        font-size: 1.05rem;
+    }
+
+    .modal p {
+        font-size: 0.8rem;
+    }
+
+    .modal-actions {
+        gap: 8px;
+    }
+
+    .btn-cancel,
+    .btn-delete {
+        padding: 10px;
+        font-size: 0.82rem;
+    }
+
+    .settings-modal {
+        max-width: 100%;
+        width: 95%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .setup-guide summary {
+        font-size: 0.8rem;
+    }
+
+    .setup-guide ol {
+        font-size: 0.75rem;
     }
 }

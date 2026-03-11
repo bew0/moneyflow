@@ -52,6 +52,7 @@ const settingsModal = $('settingsModal');
 const scriptUrlInput = $('scriptUrl');
 const connectionStatus = $('connectionStatus');
 const syncBtn = $('syncBtn');
+const pullBtn = $('pullBtn');
 const syncDot = $('syncDot');
 
 /* ═══════════ Init ═══════════ */
@@ -95,8 +96,9 @@ window.addEventListener('DOMContentLoaded', () => {
     $('pushToSheet').addEventListener('click', pushToSheet);
     $('pullFromSheet').addEventListener('click', pullFromSheet);
 
-    // Sync button
+    // Sync buttons
     syncBtn.addEventListener('click', pushToSheet);
+    pullBtn.addEventListener('click', pullFromSheet);
     updateSyncDot();
 });
 
@@ -406,6 +408,7 @@ async function pullFromSheet() {
     if (!scriptUrl) { showToast('กรุณาตั้งค่า Google Script URL ก่อน', 'error'); return; }
     if (isSyncing) return;
     setSyncing(true);
+    pullBtn.classList.add('syncing');
     showToast('กำลัง Pull ข้อมูลจาก Google Sheets...', 'info');
     try {
         const res = await fetch(scriptUrl);
@@ -421,6 +424,7 @@ async function pullFromSheet() {
     } catch (err) {
         showToast('Pull ผิดพลาด: ' + err.message, 'error');
     }
+    pullBtn.classList.remove('syncing');
     setSyncing(false);
 }
 
